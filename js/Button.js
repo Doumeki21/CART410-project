@@ -12,6 +12,20 @@ class Button {
     }
   }
 
+  drawStart() {
+    push();
+    fill(`black`);
+    rectMode(CENTER)
+    //last value is rounded corners 
+    rect(this.start.x, this.start.y, this.start.w, this.start.h, 50);
+    //TEXT
+    textAlign(CENTER,CENTER);
+    textSize(48);
+    fill(255);
+    text("Start", this.start.x, this.start.y);
+    pop();
+}
+
   // for loop function tht keeps creating until it reaches 4 buttons.
   createChoiceButtons() {
     for (let i = 0; i < 4; i++) {
@@ -22,14 +36,6 @@ class Button {
         h: 50,
       });
     }
-}
-drawStart() {
-    push();
-    fill(`black`);
-    rectMode(CENTER)
-    //last value is rounded corners 
-    rect(this.start.x, this.start.y, this.start.w, this.start.h, 50);
-    pop();
 }
 
 drawChoices() {

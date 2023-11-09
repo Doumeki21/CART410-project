@@ -19,10 +19,7 @@ class Template {
     fill(0);
     text(this.titleString,width/2, height*0.3);
     textSize(24);
-    text(this.subtitleString, width/2, height*0.4)
-
-
-
+    text(this.subtitleString, width/2, height*0.4);
     pop();
   }
 
