@@ -6,19 +6,18 @@ Olenka Yuen
 */
 
 "use strict";
+let template;
 
 //Setup the initial screen size to max devce size & reset all game elements.
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth*0.95, windowHeight*0.95);
+    template = new Template()
     // reset();
   }
 
   //Perform the program.
 function draw() {
-    // Set colors
-  fill(204, 101, 192, 127);
-  stroke(127, 63, 120);
-
-  // A rectangle
-  rect(40, 120, 120, 40);
+  background(220);
+  template.draw();
+  
   }

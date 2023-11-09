@@ -6,17 +6,13 @@ class Title extends State {
     constructor() {
       super();
       //A string of phrases.
-      this.titleString = `UNDER PRESSURE`;
-      this.subtitleString = `CLICK ANYWHERE TO CONTINUE`;
+      this.titleString = `UNDER Welcome to the SustainaWeb Academy`;
+      this.subtitleString = `You are challenged to build a sustainable web design. Your goal is to limit the amount of computation energy through critical design choices.`;
     }
   
     //Perform the program
     draw() {
-      super.draw();
-      //Background color is a vibrant purple.
-      background(58, 12, 163);
-      //Display the title.
-      this.displayTitle();
+      
     }
   
     //Display the title.
