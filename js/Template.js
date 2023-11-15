@@ -9,14 +9,16 @@ class Template {
     push();
     rectMode(CENTER);
     //x,y, width, height, rounded corners
-    fill(204, 101, 192);
+    fill(30);
     rect(width / 2, height / 2, width * 0.7, height * 0.7, 50);
-    stroke(127, 63, 120);
+    stroke(217);
+    // StrokeWeight(2);
+    // pop();
     
     //TEXT
     textAlign(CENTER);
     textSize(48);
-    fill(0);
+    fill(255);
     text(this.titleString,width/2, height*0.3);
     textSize(24);
     text(this.subtitleString, width/2, height*0.4);
