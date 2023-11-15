@@ -28,7 +28,6 @@ Olenka Yuen
 //   buttons.drawStart();
 //   }
 
-
 // function displayQuestion() {
 //   textSize(24);
 //   textAlign(CENTER, CENTER);
@@ -63,7 +62,6 @@ Olenka Yuen
 //     ellipse(width * 3 / 4, buttonY + 30, 20, 20);
 //   }
 // }
-
 let question;
 let answers = [];
 let correctAnswer;
@@ -71,6 +69,7 @@ let userScore = 0;
 let carbonEmission = 0;
 
 let selectedAnswer = -1; // -1 indicates no answer selected
+let infoClicked = false; // Variable to track if the info icon is clicked
 
 function setup() {
   createCanvas(600, 400);
@@ -80,14 +79,24 @@ function setup() {
 function draw() {
   background(220);
 
+  // Display question and answers
+  displayQuestion();
+
   // Display carbon emission bar
   fill(255, 0, 0);
   rect(0, 0, map(carbonEmission, 0, 100, 0, width), 20);
   fill(0);
   text("Carbon Emission", width / 2, 12);
 
-  // Display question and answers
-  displayQuestion();
+  // Display info rectangle when the info icon is clicked
+  if (infoClicked && selectedAnswer !== -1) {
+    fill(200, 200, 255);
+    rect(width / 4, height / 4, width / 2, height / 2);
+    fill(0);
+    textSize(14);
+    textAlign(LEFT, TOP);
+    text("Info: " + answers[selectedAnswer].explanation, width / 4 + 10, height / 4 + 10, width / 2 - 20, height / 2 - 20);
+  }
 }
 
 function setupQuestion() {
@@ -128,7 +137,7 @@ function displayQuestion() {
 
     // Apply dim effect on hover
     let isHovered = mouseX > width / 4 && mouseX < width * 3 / 4 && mouseY > yPos && mouseY < yPos + 60;
-    if (isHovered && selectedAnswer === -1) {
+    if (isHovered && selectedAnswer === -1 && !infoClicked) {
       fillColor = lerpColor(fillColor, color(100), 0.2); // Dim the color on hover
     }
 
@@ -137,8 +146,10 @@ function displayQuestion() {
     rect(width / 4, yPos, width / 2, 60);
 
     // Draw the answer text (visible by default)
-    fill(0); // Set the text color to black
-    text(answers[i].text, width / 2, yPos + 30);
+    if (selectedAnswer === -1) {
+      fill(0); // Set the text color to black
+      text(answers[i].text, width / 2, yPos + 30);
+    }
 
     // Draw the information icon "i" (visible only after user clicks)
     if (selectedAnswer !== -1) {
@@ -149,42 +160,64 @@ function displayQuestion() {
 }
 
 function mouseClicked() {
-  // Check if the user clicked on an answer button
-  for (let i = 0; i < answers.length; i++) {
-    let yPos = 100 + i * 80;
-    if (
-      mouseX > width / 4 &&
-      mouseX < width / 4 + width / 2 &&
-      mouseY > yPos &&
-      mouseY < yPos + 60
-    ) {
-      // Update scores and carbon emission
-      userScore += answers[i].score;
-      carbonEmission += 10 - answers[i].score;
+  // Check if the user clicked on an answer button and hasn't selected an answer yet
+  if (selectedAnswer === -1 && !infoClicked) {
+    for (let i = 0; i < answers.length; i++) {
+      let yPos = 100 + i * 80;
+      if (
+        mouseX > width / 4 &&
+        mouseX < width / 4 + width / 2 &&
+        mouseY > yPos &&
+        mouseY < yPos + 60
+      ) {
+        // Update scores and carbon emission
+        userScore += answers[i].score;
+        carbonEmission += 10 - answers[i].score;
 
-      // Log the user's score
-      console.log("User Score: " + userScore);
+        // Log the user's score
+        console.log("User Score: " + userScore);
 
-      // Set the selected answer
-      selectedAnswer = i;
+        // Set the selected answer
+        selectedAnswer = i;
 
-      // Set up a new question after a delay
-      setTimeout(setupQuestion, 1000);
-    }
-  }
-}
-
-// Add bounce animation on hover
-function mouseMoved() {
-  let isHovered = mouseX > width / 4 && mouseX < width * 3 / 4;
-  for (let i = 0; i < answers.length; i++) {
-    let yPos = 100 + i * 80;
-    if (isHovered && mouseY > yPos && mouseY < yPos + 60) {
-      if (selectedAnswer === -1) {
-        // Apply bounce animation
-        let bounceFactor = sin(frameCount * 0.1) * 5;
-        yPos += bounceFactor;
+        // Disable buttons and stop carbon emission increase
+        infoClicked = true;
+        setTimeout(function () {
+          selectedAnswer = -1;
+          infoClicked = false;
+        }, 1000);
       }
     }
   }
+
+  // Check if the user clicked on the information icon
+  let infoIconYPos = 100 + selectedAnswer * 80;
+  if (
+    selectedAnswer !== -1 &&
+    mouseX > width * 3 / 4 - 10 &&
+    mouseX < width * 3 / 4 + 10 &&
+    mouseY > infoIconYPos - 10 &&
+    mouseY < infoIconYPos + 10
+  ) {
+    // Set the infoClicked variable to true to display the info rectangle
+    infoClicked = true;
+  }
+  else {
+    infoClicked = false;
+  }
 }
+
+// // Add bounce animation on hover
+// function mouseMoved() {
+//   let isHovered = mouseX > width / 4 && mouseX < width * 3 / 4;
+//   for (let i = 0; i < answers.length; i++) {
+//     let yPos = 100 + i * 80;
+//     if (isHovered && mouseY > yPos && mouseY < yPos + 60) {
+//       if (selectedAnswer === -1 && !infoClicked) {
+//         // Apply bounce animation
+//         let bounceFactor = sin(frameCount * 0.1) * 5;
+//         yPos += bounceFactor;
+//       }
+//     }
+//   }
+// }
